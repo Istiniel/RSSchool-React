@@ -1,2 +1,2 @@
 # RSSchool-React.-Components
-React course 1 task
+![Deploy](https://Istiniel.github.io/RSSchool-React/react-components-1)
