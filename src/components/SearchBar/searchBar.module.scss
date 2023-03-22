@@ -1,0 +1,32 @@
+.searchBar {
+  background-color: $primary-blue;
+  flex: 0 1 20%;
+  min-width: 15rem;
+
+  padding: 1rem;
+  padding-left: 2rem;
+  border-radius: 5rem;
+
+  font-family: $font-serif;
+  @include font(2rem, 100%, 400);
+  letter-spacing: 0.06em;
+
+  outline: 3px solid $primary-black2;
+  outline-offset: -1px;
+
+  &:focus {
+    outline: 3px solid $primary-gray;
+    outline-offset: -1px;
+  }
+
+  @include maxQ(medium) {
+    padding: 0.5rem;
+    padding-left: 1rem;
+
+    font-size: 1.5rem;
+  }
+
+  @include maxQ(small) {
+    margin-top: 1rem;
+  }
+}

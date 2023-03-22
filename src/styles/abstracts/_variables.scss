@@ -1,0 +1,49 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+
+// fonts
+$font-serif: 'Roboto Slab', 'Helvetica Neue Light', sans-serif !default;
+$font-sans: 'Roboto', 'Times New Roman', Times, serif !default;
+$font-weight-normal: 400;
+$font-weight-semibold: 500;
+$font-weight-bold: 700;
+
+// Colors
+$primary-color-1: #f6f6f6;
+$primary-color-2: #4b3d37;
+$primary-color-3: #b1ab99;
+$accent-color-1: #fcf1ca;
+$accent-color-2: #fef5dc;
+
+// Explicitly set colors
+$primary-red: $accent-color-1;
+$primary-black: #000000;
+$primary-black2: $primary-color-2;
+$primary-darkgray1: rgba(41, 41, 41, 0.6);
+$primary-darkgray2: #545454;
+$primary-darkgray3: #5c5c5c;
+$primary-darkgray3: #f6f6f6;
+$primary-disabled: #cdcdcd;
+$primary-gray: $primary-color-3;
+$primary-white: $primary-color-1;
+$primary-blue: $accent-color-2;
+$primary-white2: #fafafa;
+
+//breakpoints
+$break-xs: 320px;
+$break-sm: 768px;
+$break-md: 1024px;
+$break-lg: 1280px;
+$break-xl: 1600px;
+
+/// Container's maximum width
+/// @type Length
+$max-width: 1280px !default;
+
+//variables for button component
+$button-green: #66c05d;
+$button-black: #5c5c5c;
+$button-gray: #e0e0e0;
+$button-red: #fddcc4;
+$button-white: #ffffff;

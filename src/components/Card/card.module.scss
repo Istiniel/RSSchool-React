@@ -1,0 +1,73 @@
+.container {
+  background-color: rgba($color: $primary-blue, $alpha: 0.75);
+  outline: 0.8rem solid $primary-black2;
+  outline-offset: -0.8rem;
+
+  width: 31rem;
+  height: 50rem;
+
+  padding: 3rem;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card__image {
+  background-image: url('../../assets/card__img-1.png');
+  border-radius: 1.5rem;
+
+  width: 25rem;
+  height: 25rem;
+
+  object-fit: cover;
+}
+
+.card__title {
+  margin-top: 1rem;
+  margin-bottom: 0;
+
+  color: $primary-black2;
+  font-family: $font-serif;
+  @include font(2.5rem, 140%, 500);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.card__description {
+  margin-top: 0;
+  margin-bottom: auto;
+
+  color: $primary-gray;
+  font-family: $font-sans;
+  @include font(1.5rem, 120%, 400);
+  letter-spacing: 0.06em;
+  align-self: center;
+}
+
+.card__contacts {
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card__links {
+  display: flex;
+  gap: 0.7rem;
+}
+
+.card__link {
+  @include onHover() {
+    filter: brightness(0) saturate(100%) invert(73%) sepia(23%) saturate(183%) hue-rotate(7deg)
+      brightness(92%) contrast(85%);
+  }
+}
+
+.card__time {
+  color: $primary-black2;
+  font-family: $font-sans;
+  font-style: italic;
+  @include font(2.5rem, 100%, 700);
+}
