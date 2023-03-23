@@ -11,7 +11,7 @@ const Header: React.FC = () => {
 
   const headerLinks: HeaderLinkType[] = [
     { link: 'about', title: 'About Us' },
-    { link: 'signup', title: 'Sign Up' },
+    { link: 'sign', title: 'Sign Up' },
     { link: 'prices', title: 'Prices' },
   ];
 

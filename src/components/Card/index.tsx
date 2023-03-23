@@ -8,10 +8,12 @@ export type CardType = {
   title: string;
   description: string;
   thumb: string;
+  date: string;
+  contacts: 'telegram' | 'whatsApp' | 'instagram';
   id: number;
 };
 
-const Card: React.FC<CardType> = ({ title, description, thumb }) => {
+const Card: React.FC<CardType> = ({ title, description, thumb, date, contacts }) => {
   return (
     <div className={st.container}>
       <img className={st.card__image} src={thumb} alt={`${title}_thumb`}></img>
@@ -19,17 +21,23 @@ const Card: React.FC<CardType> = ({ title, description, thumb }) => {
       <p className={st.card__description}>{description}</p>
       <div className={st.card__contacts}>
         <div className={st.card__links}>
-          <a href={thumb} target="_blank" rel="noreferrer" className={st.card__link}>
-            <img src={InstIcon} alt="inst__icon" />
-          </a>
-          <a href={thumb} target="_blank" rel="noreferrer" className={st.card__link}>
-            <img src={WhatsAppIcon} alt="whatsapp__icon" />
-          </a>
-          <a href={thumb} target="_blank" rel="noreferrer" className={st.card__link}>
-            <img src={Telegram} alt="tg__icon" />
-          </a>
+          {contacts === 'instagram' && (
+            <a href={thumb} target="_blank" rel="noreferrer" className={st.card__link}>
+              <img src={InstIcon} alt="inst__icon" />
+            </a>
+          )}
+          {contacts === 'whatsApp' && (
+            <a href={thumb} target="_blank" rel="noreferrer" className={st.card__link}>
+              <img src={WhatsAppIcon} alt="whatsapp__icon" />
+            </a>
+          )}
+          {contacts === 'telegram' && (
+            <a href={thumb} target="_blank" rel="noreferrer" className={st.card__link}>
+              <img src={Telegram} alt="tg__icon" />
+            </a>
+          )}
         </div>
-        <h3 className={st.card__time}>24 /7</h3>
+        <h3 className={st.card__time}>{date}</h3>
       </div>
     </div>
   );

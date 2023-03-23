@@ -1,0 +1,46 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-flow: column;
+  gap: 1rem;
+}
+
+.input-label {
+  display: block;
+  position: relative;
+
+  color: $primary-darkgray2;
+  font-family: $font-serif;
+  @include font(2rem, 2rem, 500);
+
+  & .validation-message {
+    padding-left: 1rem;
+
+    color: tomato;
+    position: absolute;
+    @include font(1.5rem, 1.5rem, 500);
+
+    bottom: 0;
+    left: 0;
+    transform: translateY(100%);
+  }
+}
+
+.input {
+  display: block;
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+
+  font-family: $font-serif;
+  @include font(2rem, 2rem, 400);
+
+  border-radius: 0.5rem;
+  outline: 2px solid $primary-gray;
+  outline-offset: -2px;
+}
+
+.invalid {
+  outline: 2px solid tomato;
+  outline-offset: -2px;
+}

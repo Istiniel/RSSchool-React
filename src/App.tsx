@@ -3,6 +3,7 @@ import MainPage from './Pages/MainPage';
 import Header from './components/Header';
 import About from './Pages/About';
 import NoMatches from './Pages/NoMatches/';
+import Registration from './Pages/Registration/index';
 
 import './styles/App.scss';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Header />}>
           <Route index element={<MainPage />} />
           <Route path="about" element={<About />} />
+          <Route path="sign" element={<Registration />} />
           <Route path="404" element={<NoMatches />} />
           <Route path="*" element={<Navigate to="/404" replace />} />
         </Route>

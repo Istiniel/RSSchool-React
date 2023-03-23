@@ -14,7 +14,6 @@
 }
 
 .card__image {
-  background-image: url('../../assets/card__img-1.png');
   border-radius: 1.5rem;
 
   width: 25rem;
@@ -30,7 +29,7 @@
   color: $primary-black2;
   font-family: $font-serif;
   @include font(2.5rem, 140%, 500);
-  text-transform: uppercase;
+  text-transform: capitalize;
   letter-spacing: 0.06em;
 }
 
