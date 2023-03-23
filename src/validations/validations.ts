@@ -55,6 +55,45 @@ function validateTerms<T>(
   return error ? true : false;
 }
 
+function validateSelect<T>(
+  select: HTMLSelectElement,
+  setError: React.Dispatch<React.SetStateAction<T>>
+): boolean {
+  let error = '';
+
+  const options = Array.from(select.options);
+
+  if (options[0].selected) {
+    error = 'Choose contact format';
+  }
+
+  setError((prevState) => ({
+    ...prevState,
+    selectValidation: error,
+  }));
+
+  return error ? true : false;
+}
+
+function validateSwitcher<T>(
+  male: boolean,
+  female: boolean,
+  setError: React.Dispatch<React.SetStateAction<T>>
+): boolean {
+  let error = '';
+
+  if (!male && !female) {
+    error = 'Please, make a choise';
+  }
+
+  setError((prevState) => ({
+    ...prevState,
+    switcherValidation: error,
+  }));
+
+  return error ? true : false;
+}
+
 function validateFile<T>(
   fileURL: string,
   setError: React.Dispatch<React.SetStateAction<T>>
@@ -72,4 +111,11 @@ function validateFile<T>(
   return error ? true : false;
 }
 
-export { validateCityName, validateDate, validateTerms, validateFile };
+export {
+  validateCityName,
+  validateDate,
+  validateTerms,
+  validateFile,
+  validateSwitcher,
+  validateSelect,
+};

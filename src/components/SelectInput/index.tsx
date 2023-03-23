@@ -7,7 +7,7 @@ type SelectInputType = {
   validationMessage: string;
 };
 
-class DateInput extends React.Component<SelectInputType> {
+class SelectInput extends React.Component<SelectInputType> {
   constructor(props: SelectInputType) {
     super(props);
   }
@@ -31,7 +31,9 @@ class DateInput extends React.Component<SelectInputType> {
             <option value="instagram">Instagram</option>
           </select>
           {this.props.validationMessage && (
-            <p className={st['validation-message']}>{this.props.validationMessage}</p>
+            <p className={st['validation-message']} data-testid={'error-message'}>
+              {this.props.validationMessage}
+            </p>
           )}
         </label>
       </div>
@@ -39,4 +41,4 @@ class DateInput extends React.Component<SelectInputType> {
   }
 }
 
-export default DateInput;
+export default SelectInput;

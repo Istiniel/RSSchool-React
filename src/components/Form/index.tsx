@@ -4,6 +4,8 @@ import {
   validateDate,
   validateFile,
   validateTerms,
+  validateSwitcher,
+  validateSelect,
 } from '../../validations/validations';
 import { CardType } from '../Card';
 import CheckBoxInput from '../CheckBoxInput';
@@ -20,11 +22,13 @@ type CardValidation = {
   dateValidation: string;
   selectValidation: string;
   checkboxValidation: string;
-  switcherChecked: boolean | undefined;
+  switcherValidation: string;
   fileValidation: string;
 };
 
-type FormPropsType = { addCard: (card: CardType) => void };
+type FormPropsType = {
+  addCard: (card: CardType) => void;
+};
 
 class Form extends React.Component<FormPropsType, CardValidation> {
   private form = React.createRef<HTMLFormElement>();
@@ -32,7 +36,8 @@ class Form extends React.Component<FormPropsType, CardValidation> {
   private dateInput = React.createRef<HTMLInputElement>();
   private selectInput = React.createRef<HTMLSelectElement>();
   private checkboxInput = React.createRef<HTMLInputElement>();
-  private switcherInput = React.createRef<HTMLInputElement>();
+  private switcherInputFemale = React.createRef<HTMLInputElement>();
+  private switcherInputMale = React.createRef<HTMLInputElement>();
   private fileUploadInput = React.createRef<HTMLInputElement>();
 
   constructor(props: FormPropsType) {
@@ -43,38 +48,47 @@ class Form extends React.Component<FormPropsType, CardValidation> {
       dateValidation: '',
       selectValidation: '',
       checkboxValidation: '',
-      switcherChecked: this.switcherInput.current?.defaultChecked,
+      switcherValidation: '',
       fileValidation: '',
     };
-  }
-
-  handleSwitcherChange() {
-    this.setState((prevState) => ({ ...prevState, switcherChecked: !prevState.switcherChecked }));
   }
 
   handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
 
     let validationError;
-    validationError = validateCityName<typeof this.state>(
-      this.cityInput.current!.value,
-      this.setState.bind(this) || validationError
-    );
+    validationError =
+      validateCityName<typeof this.state>(
+        this.cityInput.current!.value,
+        this.setState.bind(this)
+      ) || validationError;
 
-    validationError = validateDate<typeof this.state>(
-      this.dateInput.current!.value,
-      this.setState.bind(this) || validationError
-    );
+    validationError =
+      validateDate<typeof this.state>(this.dateInput.current!.value, this.setState.bind(this)) ||
+      validationError;
 
-    validationError = validateTerms<typeof this.state>(
-      this.checkboxInput.current!.checked,
-      this.setState.bind(this) || validationError
-    );
+    validationError =
+      validateTerms<typeof this.state>(
+        this.checkboxInput.current!.checked,
+        this.setState.bind(this)
+      ) || validationError;
 
-    validationError = validateFile<typeof this.state>(
-      this.fileUploadInput.current!.value,
-      this.setState.bind(this) || validationError
-    );
+    validationError =
+      validateSelect<typeof this.state>(this.selectInput.current!, this.setState.bind(this)) ||
+      validationError;
+
+    validationError =
+      validateFile<typeof this.state>(
+        this.fileUploadInput.current!.value,
+        this.setState.bind(this)
+      ) || validationError;
+
+    validationError =
+      validateSwitcher<typeof this.state>(
+        this.switcherInputFemale.current!.checked,
+        this.switcherInputMale.current!.checked,
+        this.setState.bind(this)
+      ) || validationError;
 
     if (validationError) {
       return;
@@ -82,12 +96,13 @@ class Form extends React.Component<FormPropsType, CardValidation> {
 
     const file = this.fileUploadInput.current!.files![0];
     const image = URL.createObjectURL(file);
+    const gender = this.switcherInputFemale.current!.checked ? 'Mrs.' : 'Mr.';
 
     const newCard: CardType = {
       title: this.cityInput.current!.value,
       description: 'New Created Post Card',
       thumb: image,
-      date: this.dateInput.current!.value,
+      date: `${gender} ${this.dateInput.current!.value}`,
       contacts: this.selectInput.current!.value as 'telegram' | 'whatsApp' | 'instagram',
       id: 1,
     };
@@ -98,13 +113,7 @@ class Form extends React.Component<FormPropsType, CardValidation> {
 
   handleReset() {
     for (const message in this.state) {
-      if (message !== 'switcherChecked') {
-        this.setState((prevState) => ({ ...prevState, [message]: '' }));
-      }
-
-      if (message === 'switcherChecked') {
-        this.switcherInput.current!.checked = false;
-      }
+      this.setState((prevState) => ({ ...prevState, [message]: '' }));
     }
     return;
   }
@@ -144,8 +153,9 @@ class Form extends React.Component<FormPropsType, CardValidation> {
 
           <Switcher
             name="Female / Male"
-            refSwitcher={this.switcherInput}
-            onChange={this.handleSwitcherChange.bind(this)}
+            refMale={this.switcherInputMale}
+            refFemale={this.switcherInputFemale}
+            validationMessage={this.state.switcherValidation}
           />
 
           <FileInput

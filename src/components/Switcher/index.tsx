@@ -3,8 +3,9 @@ import st from './switcher.module.scss';
 
 type SwitcherType = {
   name: string;
-  refSwitcher: React.RefObject<HTMLInputElement>;
-  onChange: () => void;
+  refFemale: React.RefObject<HTMLInputElement>;
+  refMale: React.RefObject<HTMLInputElement>;
+  validationMessage: string;
 };
 
 class Switcher extends React.Component<SwitcherType> {
@@ -15,18 +16,30 @@ class Switcher extends React.Component<SwitcherType> {
   render() {
     return (
       <div className={st.container}>
-        <h3 className={st['input-label']}>
-          {this.props.refSwitcher?.current?.checked ? 'Male' : 'Female'}
-        </h3>
-        <label className={st['switch']}>
-          <input
-            type="checkbox"
-            ref={this.props.refSwitcher}
-            onChange={this.props.onChange}
-            defaultChecked={false}
-          />
-          <span className={`${st.slider} ${st.round}`}></span>
-        </label>
+        <h3 className={st.header}>{'Choose gender'}</h3>
+        <div className={st['radio-container']}>
+          <label className={st['input-label']}>
+            Female
+            <input
+              className={st.switcher}
+              type="radio"
+              ref={this.props.refFemale}
+              name={'switcher'}
+            />
+            {this.props.validationMessage && (
+              <p className={st['validation-message']}>{this.props.validationMessage}</p>
+            )}
+          </label>
+          <label className={st['input-label']}>
+            Male
+            <input
+              className={st.switcher}
+              type="radio"
+              ref={this.props.refMale}
+              name={'switcher'}
+            />
+          </label>
+        </div>
       </div>
     );
   }
