@@ -1,4 +1,6 @@
-function validateCityName<T>(
+import { CardValidation } from '../components/Form';
+
+function validateCityName<T extends CardValidation>(
   cityName: string,
   setError: React.Dispatch<React.SetStateAction<T>>
 ): boolean {
@@ -12,33 +14,19 @@ function validateCityName<T>(
     error = 'wrong City name';
   }
 
-  if (!/^[A-Z]/.test(cityName)) {
+  if (!/^[A-ZА-Я]/.test(cityName)) {
     error = 'City name should start from uppercase';
   }
 
-  setError((prevState) => ({ ...prevState, cityValidation: error }));
+  setError((prevState) => ({
+    ...prevState,
+    validation: { ...prevState.validation, cityValidation: error },
+  }));
 
   return error ? true : false;
 }
 
-function validateDate<T>(date: string, setError: React.Dispatch<React.SetStateAction<T>>): boolean {
-  let error = '';
-
-  if (date.length === 0) {
-    error = 'Empty input';
-  }
-
-  const test = date.match(/[0-9]{4}/);
-  if (test !== null && +test![0] < 2020) {
-    error = 'not earlier than 2020';
-  }
-
-  setError((prevState) => ({ ...prevState, dateValidation: error }));
-
-  return error ? true : false;
-}
-
-function validateTerms<T>(
+function validateTerms<T extends CardValidation>(
   consent: boolean,
   setError: React.Dispatch<React.SetStateAction<T>>
 ): boolean {
@@ -49,13 +37,13 @@ function validateTerms<T>(
 
   setError((prevState) => ({
     ...prevState,
-    checkboxValidation: error,
+    validation: { ...prevState.validation, checkboxValidation: error },
   }));
 
   return error ? true : false;
 }
 
-function validateSelect<T>(
+function validateSelect<T extends CardValidation>(
   select: HTMLSelectElement,
   setError: React.Dispatch<React.SetStateAction<T>>
 ): boolean {
@@ -69,13 +57,13 @@ function validateSelect<T>(
 
   setError((prevState) => ({
     ...prevState,
-    selectValidation: error,
+    validation: { ...prevState.validation, selectValidation: error },
   }));
 
   return error ? true : false;
 }
 
-function validateSwitcher<T>(
+function validateSwitcher<T extends CardValidation>(
   male: boolean,
   female: boolean,
   setError: React.Dispatch<React.SetStateAction<T>>
@@ -88,13 +76,13 @@ function validateSwitcher<T>(
 
   setError((prevState) => ({
     ...prevState,
-    switcherValidation: error,
+    validation: { ...prevState.validation, switcherValidation: error },
   }));
 
   return error ? true : false;
 }
 
-function validateFile<T>(
+function validateFile<T extends CardValidation>(
   fileURL: string,
   setError: React.Dispatch<React.SetStateAction<T>>
 ): boolean {
@@ -105,17 +93,59 @@ function validateFile<T>(
 
   setError((prevState) => ({
     ...prevState,
-    fileValidation: error,
+    validation: { ...prevState.validation, fileValidation: error },
   }));
 
   return error ? true : false;
 }
 
-export {
-  validateCityName,
-  validateDate,
-  validateTerms,
-  validateFile,
-  validateSwitcher,
-  validateSelect,
+function validateDate<T extends CardValidation>(
+  date: string,
+  setError: React.Dispatch<React.SetStateAction<T>>
+): boolean {
+  let error = '';
+
+  if (date.length === 0) {
+    error = 'Empty input';
+  }
+
+  const test = date.match(/[0-9]{4}/);
+  if (test !== null && +test![0] < 2020) {
+    error = 'not earlier than 2020';
+  }
+
+  setError((prevState) => ({
+    ...prevState,
+    validation: { ...prevState.validation, dateValidation: error },
+  }));
+
+  return error ? true : false;
+}
+
+export type validationValues = {
+  cityName: string;
+  date: string;
+  termSigned: boolean;
+  select: HTMLSelectElement;
+  male: boolean;
+  female: boolean;
+  imageURL: string;
+  setError: React.Dispatch<React.SetStateAction<CardValidation>>;
 };
+
+function validateForm(inputsValues: validationValues): boolean {
+  const { cityName, date, termSigned, select, female, male, imageURL, setError } = inputsValues;
+
+  let validationError = false;
+
+  validationError = validateCityName(cityName, setError) || validationError;
+  validationError = validateDate(date, setError) || validationError;
+  validationError = validateTerms(termSigned, setError) || validationError;
+  validationError = validateSelect(select, setError) || validationError;
+  validationError = validateFile(imageURL, setError) || validationError;
+  validationError = validateSwitcher(female, male, setError) || validationError;
+
+  return validationError;
+}
+
+export { validateForm };

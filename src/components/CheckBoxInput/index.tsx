@@ -26,7 +26,9 @@ class CheckBoxInput extends React.Component<CheckBoxInputType> {
           <p className={st.terms}>{'I consent to my personal data'}</p>
 
           {this.props.validationMessage && (
-            <p className={st['validation-message']}>{this.props.validationMessage}</p>
+            <p className={st['validation-message']} data-testid={'error-message'}>
+              {this.props.validationMessage}
+            </p>
           )}
         </label>
       </div>

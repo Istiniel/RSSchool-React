@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  validateCityName,
-  validateDate,
-  validateFile,
-  validateTerms,
-  validateSwitcher,
-  validateSelect,
-} from '../../validations/validations';
+import { validateForm, validationValues } from '../../validations/validations';
 import { CardType } from '../Card';
 import CheckBoxInput from '../CheckBoxInput';
 import CityInput from '../CityInput/index';
@@ -16,14 +9,18 @@ import Switcher from './../Switcher/index';
 import st from './form.module.scss';
 import Button from '../Button';
 import FileInput from './../FileInput/index';
+import PopUp from '../PopUp';
 
-type CardValidation = {
-  cityValidation: string;
-  dateValidation: string;
-  selectValidation: string;
-  checkboxValidation: string;
-  switcherValidation: string;
-  fileValidation: string;
+export type CardValidation = {
+  isPopUpActive: boolean;
+  validation: {
+    cityValidation: string;
+    dateValidation: string;
+    selectValidation: string;
+    checkboxValidation: string;
+    switcherValidation: string;
+    fileValidation: string;
+  };
 };
 
 type FormPropsType = {
@@ -44,51 +41,35 @@ class Form extends React.Component<FormPropsType, CardValidation> {
     super(props);
 
     this.state = {
-      cityValidation: '',
-      dateValidation: '',
-      selectValidation: '',
-      checkboxValidation: '',
-      switcherValidation: '',
-      fileValidation: '',
+      isPopUpActive: false,
+      validation: {
+        cityValidation: '',
+        dateValidation: '',
+        selectValidation: '',
+        checkboxValidation: '',
+        switcherValidation: '',
+        fileValidation: '',
+      },
     };
   }
 
   handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    let validationError;
-    validationError =
-      validateCityName<typeof this.state>(
-        this.cityInput.current!.value,
-        this.setState.bind(this)
-      ) || validationError;
+    const inputValues: validationValues = {
+      cityName: this.cityInput.current!.value,
+      date: this.dateInput.current!.value,
+      termSigned: this.checkboxInput.current!.checked,
+      select: this.selectInput.current!,
+      male: this.switcherInputMale.current!.checked,
+      female: this.switcherInputFemale.current!.checked,
 
-    validationError =
-      validateDate<typeof this.state>(this.dateInput.current!.value, this.setState.bind(this)) ||
-      validationError;
+      imageURL: this.fileUploadInput.current!.value,
 
-    validationError =
-      validateTerms<typeof this.state>(
-        this.checkboxInput.current!.checked,
-        this.setState.bind(this)
-      ) || validationError;
+      setError: this.setState.bind(this),
+    };
 
-    validationError =
-      validateSelect<typeof this.state>(this.selectInput.current!, this.setState.bind(this)) ||
-      validationError;
-
-    validationError =
-      validateFile<typeof this.state>(
-        this.fileUploadInput.current!.value,
-        this.setState.bind(this)
-      ) || validationError;
-
-    validationError =
-      validateSwitcher<typeof this.state>(
-        this.switcherInputFemale.current!.checked,
-        this.switcherInputMale.current!.checked,
-        this.setState.bind(this)
-      ) || validationError;
+    const validationError = validateForm(inputValues);
 
     if (validationError) {
       return;
@@ -109,18 +90,36 @@ class Form extends React.Component<FormPropsType, CardValidation> {
 
     this.props.addCard(newCard);
     this.form.current!.reset();
+    this.handlePopUp();
+  }
+
+  handlePopUp() {
+    this.setState((prevState) => ({
+      ...prevState,
+      isPopUpActive: !prevState.isPopUpActive,
+    }));
   }
 
   handleReset() {
-    for (const message in this.state) {
-      this.setState((prevState) => ({ ...prevState, [message]: '' }));
+    for (const message in this.state.validation) {
+      this.setState((prevState) => ({
+        ...prevState,
+        validation: { ...prevState.validation, [message]: '' },
+      }));
     }
+
     return;
   }
 
   render() {
     return (
       <>
+        <PopUp
+          isActive={this.state.isPopUpActive}
+          message={'created'}
+          togglePopUp={this.handlePopUp.bind(this)}
+        />
+
         <form
           onSubmit={this.handleSubmit.bind(this)}
           onReset={this.handleReset.bind(this)}
@@ -130,38 +129,38 @@ class Form extends React.Component<FormPropsType, CardValidation> {
           <CityInput
             name="City"
             refCity={this.cityInput}
-            validationMessage={this.state.cityValidation}
+            validationMessage={this.state.validation.cityValidation}
           />
 
           <DateInput
             name="Date"
             refDate={this.dateInput}
-            validationMessage={this.state.dateValidation}
+            validationMessage={this.state.validation.dateValidation}
           />
 
           <SelectInput
             name="Select contacts"
             refSelect={this.selectInput}
-            validationMessage={this.state.selectValidation}
+            validationMessage={this.state.validation.selectValidation}
           />
 
           <CheckBoxInput
             name="Terms"
             refCheck={this.checkboxInput}
-            validationMessage={this.state.checkboxValidation}
+            validationMessage={this.state.validation.checkboxValidation}
           />
 
           <Switcher
             name="Female / Male"
             refMale={this.switcherInputMale}
             refFemale={this.switcherInputFemale}
-            validationMessage={this.state.switcherValidation}
+            validationMessage={this.state.validation.switcherValidation}
           />
 
           <FileInput
             name="Upload image"
             refFileUpload={this.fileUploadInput}
-            validationMessage={this.state.fileValidation}
+            validationMessage={this.state.validation.fileValidation}
           />
 
           <div className={st.buttons}>

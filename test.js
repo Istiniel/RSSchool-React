@@ -1,3 +1,6 @@
-let str = 'alksjdasfjas';
-
-console.log(/^[A-ZА-Я]/.test('asdasf'));
+const user = {
+  name: 'Jojo',
+  sayName() {
+    console.log(this.name);
+  },
+};
