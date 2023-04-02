@@ -14,7 +14,7 @@ const Button: React.FC<ButtonType> = ({ type, color, outlined, content }) => {
   outlined && (classes += st.outlined + ' ');
 
   return (
-    <button type={type} className={classes}>
+    <button type={type} className={classes} name={type || 'submit'}>
       {content}
     </button>
   );

@@ -1,4 +1,4 @@
-import { CardValidation } from '../components/Form';
+import { CardValidation } from '../components/FormErrs';
 
 function validateCityName<T extends CardValidation>(
   cityName: string,

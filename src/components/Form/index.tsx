@@ -1,176 +1,94 @@
-import React from 'react';
-import { validateForm, validationValues } from '../../validations/validations';
+import React, { useState } from 'react';
+import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { CardType } from '../Card';
-import CheckBoxInput from '../CheckBoxInput';
-import CityInput from '../CityInput/index';
-import SelectInput from '../SelectInput';
-import DateInput from './../DateInput/index';
-import Switcher from './../Switcher/index';
-import st from './form.module.scss';
-import Button from '../Button';
-import FileInput from './../FileInput/index';
+import CityInput from './../CityInput/index';
+import DateInput from '../DateInput';
 import PopUp from '../PopUp';
 
-export type CardValidation = {
-  isPopUpActive: boolean;
-  validation: {
-    cityValidation: string;
-    dateValidation: string;
-    selectValidation: string;
-    checkboxValidation: string;
-    switcherValidation: string;
-    fileValidation: string;
-  };
-};
+import st from './form.module.scss';
+import Button from '../Button';
+import SelectInput from '../SelectInput';
+import CheckBoxInput from '../CheckBoxInput';
+import Switcher from '../Switcher';
+import FileInput from '../FileInput';
+
+export interface FormValues {
+  city: string;
+  date: string;
+  contacts: 'telegram' | 'whatsApp' | 'instagram';
+  terms: boolean;
+  gender: string;
+  male: boolean;
+  female: boolean;
+  image: FileList;
+}
 
 type FormPropsType = {
   addCard: (card: CardType) => void;
+  callback?: () => void;
 };
 
-class Form extends React.Component<FormPropsType, CardValidation> {
-  private form = React.createRef<HTMLFormElement>();
-  private cityInput = React.createRef<HTMLInputElement>();
-  private dateInput = React.createRef<HTMLInputElement>();
-  private selectInput = React.createRef<HTMLSelectElement>();
-  private checkboxInput = React.createRef<HTMLInputElement>();
-  private switcherInputFemale = React.createRef<HTMLInputElement>();
-  private switcherInputMale = React.createRef<HTMLInputElement>();
-  private fileUploadInput = React.createRef<HTMLInputElement>();
+const AddCardForm: React.FC<FormPropsType> = ({ addCard, callback }) => {
+  const [isPopActive, setIsPopActive] = useState<boolean>(false);
 
-  constructor(props: FormPropsType) {
-    super(props);
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+    clearErrors,
+  } = useForm<FormValues>({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
 
-    this.state = {
-      isPopUpActive: false,
-      validation: {
-        cityValidation: '',
-        dateValidation: '',
-        selectValidation: '',
-        checkboxValidation: '',
-        switcherValidation: '',
-        fileValidation: '',
-      },
-    };
-  }
+  const onSubmit: SubmitHandler<FormValues> = (data) => {
+    callback && callback();
 
-  handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const inputValues: validationValues = {
-      cityName: this.cityInput.current!.value,
-      date: this.dateInput.current!.value,
-      termSigned: this.checkboxInput.current!.checked,
-      select: this.selectInput.current!,
-      male: this.switcherInputMale.current!.checked,
-      female: this.switcherInputFemale.current!.checked,
-
-      imageURL: this.fileUploadInput.current!.value,
-
-      setError: this.setState.bind(this),
-    };
-
-    const validationError = validateForm(inputValues);
-
-    if (validationError) {
-      return;
-    }
-
-    const file = this.fileUploadInput.current!.files![0];
+    const file = data.image[0];
     const image = URL.createObjectURL(file);
-    const gender = this.switcherInputFemale.current!.checked ? 'Mrs.' : 'Mr.';
 
     const newCard: CardType = {
-      title: this.cityInput.current!.value,
+      title: data.city,
       description: 'New Created Post Card',
       thumb: image,
-      date: `${gender} ${this.dateInput.current!.value}`,
-      contacts: this.selectInput.current!.value as 'telegram' | 'whatsApp' | 'instagram',
-      id: 1,
+      date: `${data.gender === 'female' ? 'Mrs.' : 'Mr.'} ${data.date}`,
+      contacts: data.contacts,
+      id: Math.random() * 823,
     };
 
-    this.props.addCard(newCard);
-    this.form.current!.reset();
-    this.handlePopUp();
-  }
+    addCard(newCard);
+    setIsPopActive(true);
+    reset();
+  };
 
-  handlePopUp() {
-    this.setState((prevState) => ({
-      ...prevState,
-      isPopUpActive: !prevState.isPopUpActive,
-    }));
-  }
+  const onError: SubmitErrorHandler<FormValues> = (data) => {
+    console.log(data);
+  };
 
-  handleReset() {
-    for (const message in this.state.validation) {
-      this.setState((prevState) => ({
-        ...prevState,
-        validation: { ...prevState.validation, [message]: '' },
-      }));
-    }
+  return (
+    <>
+      <PopUp
+        isActive={isPopActive}
+        message={'created'}
+        togglePopUp={() => setIsPopActive(!isPopActive)}
+      />
+      <form
+        onSubmit={handleSubmit(onSubmit, onError)}
+        onReset={() => clearErrors()}
+        className={st.form}
+      >
+        <CityInput register={register} error={errors.city?.message} />
+        <DateInput register={register} error={errors.date?.message} />
+        <SelectInput register={register} error={errors.contacts?.message} />
+        <CheckBoxInput register={register} error={errors.terms?.message} />
+        <Switcher register={register} error={errors.gender?.message} />
+        <FileInput register={register} error={errors.image?.message} />
 
-    return;
-  }
+        <div className={st.buttons}>
+          <Button type={'submit'} color={'black'} content={'Create'} />
+          <Button type={'reset'} color={'black'} content={'Reset'} />
+        </div>
+      </form>
+    </>
+  );
+};
 
-  render() {
-    return (
-      <>
-        <PopUp
-          isActive={this.state.isPopUpActive}
-          message={'created'}
-          togglePopUp={this.handlePopUp.bind(this)}
-        />
-
-        <form
-          onSubmit={this.handleSubmit.bind(this)}
-          onReset={this.handleReset.bind(this)}
-          className={st.form}
-          ref={this.form}
-        >
-          <CityInput
-            name="City"
-            refCity={this.cityInput}
-            validationMessage={this.state.validation.cityValidation}
-          />
-
-          <DateInput
-            name="Date"
-            refDate={this.dateInput}
-            validationMessage={this.state.validation.dateValidation}
-          />
-
-          <SelectInput
-            name="Select contacts"
-            refSelect={this.selectInput}
-            validationMessage={this.state.validation.selectValidation}
-          />
-
-          <CheckBoxInput
-            name="Terms"
-            refCheck={this.checkboxInput}
-            validationMessage={this.state.validation.checkboxValidation}
-          />
-
-          <Switcher
-            name="Female / Male"
-            refMale={this.switcherInputMale}
-            refFemale={this.switcherInputFemale}
-            validationMessage={this.state.validation.switcherValidation}
-          />
-
-          <FileInput
-            name="Upload image"
-            refFileUpload={this.fileUploadInput}
-            validationMessage={this.state.validation.fileValidation}
-          />
-
-          <div className={st.buttons}>
-            <Button type={'submit'} color={'black'} content={'Create'} />
-            <Button type={'reset'} color={'black'} content={'Reset'} />
-          </div>
-        </form>
-      </>
-    );
-  }
-}
-
-export default Form;
+export default AddCardForm;
