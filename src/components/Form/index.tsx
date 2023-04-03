@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 import { CardType } from '../Card';
 import CityInput from './../CityInput/index';
@@ -37,6 +37,7 @@ const AddCardForm: React.FC<FormPropsType> = ({ addCard, callback }) => {
     handleSubmit,
     reset,
     clearErrors,
+    formState,
   } = useForm<FormValues>({ mode: 'onSubmit', reValidateMode: 'onSubmit' });
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
@@ -56,12 +57,17 @@ const AddCardForm: React.FC<FormPropsType> = ({ addCard, callback }) => {
 
     addCard(newCard);
     setIsPopActive(true);
-    reset();
   };
 
   const onError: SubmitErrorHandler<FormValues> = (data) => {
     console.log(data);
   };
+
+  useEffect(() => {
+    if (formState.isSubmitted) {
+      reset();
+    }
+  }, [formState, reset]);
 
   return (
     <>
@@ -84,7 +90,7 @@ const AddCardForm: React.FC<FormPropsType> = ({ addCard, callback }) => {
 
         <div className={st.buttons}>
           <Button type={'submit'} color={'black'} content={'Create'} />
-          <Button type={'reset'} color={'black'} content={'Reset'} />
+          <Button type={'button'} color={'black'} content={'Reset'} callback={() => reset()} />
         </div>
       </form>
     </>

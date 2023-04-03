@@ -35,7 +35,7 @@ describe('Form', () => {
 
   it('with invalid renders validation errors', async () => {
     const { getByRole, getByLabelText, container } = render(
-      <Form addCard={(newCard: CardType) => console.log('test')} callback={mockOnSubmit} />
+      <Form addCard={() => console.log('test')} callback={mockOnSubmit} />
     );
 
     await act(async () => {
