@@ -1,44 +1,41 @@
 import React from 'react';
 import st from './select.module.scss';
+import { FormValues } from '../Form';
+import { UseFormRegister } from 'react-hook-form';
 
 type SelectInputType = {
-  name: string;
-  refSelect: React.RefObject<HTMLSelectElement>;
-  validationMessage: string;
+  register: UseFormRegister<FormValues>;
+  error: string | undefined;
 };
 
-class SelectInput extends React.Component<SelectInputType> {
-  constructor(props: SelectInputType) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <div className={st.container}>
-        <label className={st['input-label']}>
-          {this.props.name}:
-          <select
-            name="contacts"
-            ref={this.props.refSelect}
-            className={st.input}
-            defaultValue={'default'}
-          >
-            <option value="default" disabled>
-              Select contact format
-            </option>
-            <option value="telegram">Telegram</option>
-            <option value="whatsApp">WhatsApp</option>
-            <option value="instagram">Instagram</option>
-          </select>
-          {this.props.validationMessage && (
-            <p className={st['validation-message']} data-testid={'error-message'}>
-              {this.props.validationMessage}
-            </p>
-          )}
-        </label>
-      </div>
-    );
-  }
-}
+const SelectInput: React.FC<SelectInputType> = ({ register, error }) => {
+  return (
+    <div className={st.container}>
+      <label className={st['input-label']}>
+        Select contacts:
+        <select
+          className={st.input}
+          defaultValue={''}
+          data-testid="selectInput"
+          {...register('contacts', {
+            required: 'Choose contact format',
+          })}
+        >
+          <option value="" disabled hidden>
+            Select contact format
+          </option>
+          <option value="telegram">Telegram</option>
+          <option value="whatsApp">WhatsApp</option>
+          <option value="instagram">Instagram</option>
+        </select>
+        {error && (
+          <p className={st['validation-message']} data-testid={'error-message'}>
+            {error}
+          </p>
+        )}
+      </label>
+    </div>
+  );
+};
 
 export default SelectInput;

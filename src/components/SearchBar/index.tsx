@@ -1,56 +1,42 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import st from './searchBar.module.scss';
 
-class SearchBar extends React.Component<Record<string, never>, { value: string }> {
-  constructor({}) {
-    super({});
-    this.state = {
-      value: '',
-    };
+const SearchBar: React.FC = () => {
+  const [searchValue, setSearchValue] = useState<string>('');
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.onUnload = this.onUnload.bind(this);
-  }
+  const inputValue = useRef<string>(searchValue);
 
-  onUnload() {
-    localStorage.setItem('searchKey', this.state.value);
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     const initialValue = localStorage.getItem('searchKey');
-    this.setState({ value: initialValue || this.state.value });
-    window.addEventListener('beforeunload', this.onUnload);
-  }
+    initialValue && setSearchValue(initialValue);
 
-  componentWillUnmount() {
-    localStorage.setItem('searchKey', this.state.value);
-    window.removeEventListener('beforeunload', this.onUnload);
-  }
+    return () => {
+      localStorage.setItem('searchKey', inputValue.current);
+    };
+  }, []);
 
-  handleSubmit(event: React.SyntheticEvent) {
-    console.log('submitted value: ' + this.state.value);
+  useEffect(() => {
+    inputValue.current = searchValue;
+  }, [searchValue, setSearchValue]);
+
+  function handleSubmit(event: React.SyntheticEvent) {
+    console.log('submitted value: ' + searchValue);
     event.preventDefault();
   }
 
-  handleChange(event: React.SyntheticEvent) {
-    const target = event.target as HTMLInputElement;
-    this.setState({ value: target.value });
-  }
-
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          value={this.state.value}
-          className={st.searchBar}
-          onChange={this.handleChange}
-          placeholder="Search..."
-        />
-      </form>
-    );
-  }
-}
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={searchValue}
+        className={st.searchBar}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+          setSearchValue(event.target!.value)
+        }
+        placeholder="Search..."
+      />
+    </form>
+  );
+};
 
 export default SearchBar;

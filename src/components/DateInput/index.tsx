@@ -1,38 +1,31 @@
 import React from 'react';
 import st from './dateInput.module.scss';
+import { UseFormRegister } from 'react-hook-form';
+import { FormValues } from '../Form';
 
 type DateInputType = {
-  name: string;
-  refDate: React.RefObject<HTMLInputElement>;
-  validationMessage: string;
+  register: UseFormRegister<FormValues>;
+  error: string | undefined;
 };
 
-class DateInput extends React.Component<DateInputType> {
-  constructor(props: DateInputType) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <div className={st.container}>
-        <label className={st['input-label']}>
-          {this.props.name}:
-          <input
-            className={`${st.input} ${this.props.validationMessage && 'invalid'}`}
-            name={this.props.name}
-            type="date"
-            placeholder="Enter visit day"
-            ref={this.props.refDate}
-          />
-          {this.props.validationMessage && (
-            <p className={st['validation-message']} data-testid="error-message">
-              {this.props.validationMessage}
-            </p>
-          )}
-        </label>
-      </div>
-    );
-  }
-}
+const DateInput: React.FC<DateInputType> = ({ register, error }) => {
+  return (
+    <div className={st.container}>
+      <label className={st['input-label']}>
+        Date:
+        <input
+          className={`${st.input} ${error && 'invalid'}`}
+          type="date"
+          placeholder="Enter visit day"
+          data-testid="dateInput"
+          {...register('date', {
+            required: 'Enter visit day',
+          })}
+        />
+        {error && <p className={st['validation-message']}>{error}</p>}
+      </label>
+    </div>
+  );
+};
 
 export default DateInput;
