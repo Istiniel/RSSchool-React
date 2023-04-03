@@ -2,7 +2,6 @@ import React from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 import Form from './index';
-import { CardType } from '../Card';
 
 describe('Form', () => {
   window.URL.createObjectURL = vi.fn();

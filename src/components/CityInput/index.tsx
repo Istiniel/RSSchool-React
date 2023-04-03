@@ -21,7 +21,7 @@ const CityInput: React.FC<CityInputType> = ({ register, error }) => {
           {...register('city', {
             required: 'Enter city name',
             pattern: {
-              value: /^[A-ZЭ-Я]/,
+              value: /^[A-ZА-Я]/,
               message: 'City name should start from uppercase',
             },
           })}
