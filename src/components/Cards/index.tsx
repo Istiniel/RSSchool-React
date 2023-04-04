@@ -3,15 +3,15 @@ import st from './cards.module.scss';
 import Card from '../Card';
 
 // types
-import { CardType } from '../Card';
+import { Anime } from './../../API/API';
 
-type CardsType = { cards: CardType[] };
+type CardsType = { cards: Anime[] };
 
 const Cards: React.FC<CardsType> = ({ cards }) => {
   return (
     <section className={st.cards}>
       {cards.map((card) => (
-        <Card {...card} key={card.id} />
+        <Card {...card} key={card.mal_id} />
       ))}
     </section>
   );

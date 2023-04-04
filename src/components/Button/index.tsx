@@ -10,7 +10,7 @@ type ButtonType = {
 };
 
 const Button: React.FC<ButtonType> = ({ type, color, outlined, content, callback }) => {
-  let classes = '';
+  let classes = st.button + ' ';
   color ? (classes += st[color] + ' ') : (classes += st.red + ' ');
   outlined && (classes += st.outlined + ' ');
 

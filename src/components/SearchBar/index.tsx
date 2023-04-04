@@ -1,26 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import st from './searchBar.module.scss';
+import useSaveSearchValueInLS from '../../hooks/useSaveSearchValueInLS';
 
-const SearchBar: React.FC = () => {
+type SearchBarProps = {
+  setAnimeTitle: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const SearchBar: React.FC<SearchBarProps> = ({ setAnimeTitle }) => {
   const [searchValue, setSearchValue] = useState<string>('');
 
-  const inputValue = useRef<string>(searchValue);
-
-  useEffect(() => {
-    const initialValue = localStorage.getItem('searchKey');
-    initialValue && setSearchValue(initialValue);
-
-    return () => {
-      localStorage.setItem('searchKey', inputValue.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    inputValue.current = searchValue;
-  }, [searchValue, setSearchValue]);
+  useSaveSearchValueInLS({ searchValue, setSearchValue });
 
   function handleSubmit(event: React.SyntheticEvent) {
-    console.log('submitted value: ' + searchValue);
+    setAnimeTitle(searchValue);
     event.preventDefault();
   }
 
@@ -33,7 +25,7 @@ const SearchBar: React.FC = () => {
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
           setSearchValue(event.target!.value)
         }
-        placeholder="Search..."
+        placeholder="Enter anime title..."
       />
     </form>
   );

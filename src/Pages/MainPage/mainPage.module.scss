@@ -4,9 +4,24 @@
 }
 
 .searchBar__container {
+  position: relative;
   padding: 3rem;
 
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.error {
+  font-family: $font-serif;
+  color: $primary-black2;
+  @include font(3rem, 130%, 500);
+  text-align: center;
+}
+
+.searchQuery {
+  font-family: $font-serif;
+  color: $primary-black2;
+  @include font(2rem, 130%, 500);
+  text-align: center;
 }
