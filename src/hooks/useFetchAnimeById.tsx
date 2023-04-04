@@ -14,7 +14,6 @@ const useFetchAnimeById = (id: number) => {
 
       const response = await fetchAnimeById(id);
       const anime = response.data;
-      console.log(anime);
 
       setTimeout(() => {
         setAnime(anime);

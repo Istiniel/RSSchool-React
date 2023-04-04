@@ -1,5 +1,8 @@
+import React from 'react';
 import { Mock, vi } from 'vitest';
 import { fetchAnimeById, fetchAnimeByIdResponse } from './API';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import Card from './../components/Card/index';
 
 const mockAnime: fetchAnimeByIdResponse = {
   data: {
@@ -126,10 +129,14 @@ describe('Fetch Anime', () => {
       })
     ) as Mock;
 
-    const anime = (await fetchAnimeById(54101)).data;
+    render(<Card {...mockAnime.data} />);
+
+    await waitFor(() => {
+      fireEvent.click(screen.getByTestId('container'));
+    });
 
     expect(fetch).toHaveBeenCalledTimes(1);
-    expect(anime.title).toBe('Crater no Naru Ki');
+    expect(screen.getByText(/Crater no/)).toBeInTheDocument();
   });
 
   it('returns null when exception', async () => {

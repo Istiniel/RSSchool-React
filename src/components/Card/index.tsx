@@ -13,6 +13,7 @@ const Card: React.FC<Anime> = (anime) => {
         onClick={() => {
           setIsModalActive(true);
         }}
+        data-testid="container"
       >
         <img
           className={st.card__image}
