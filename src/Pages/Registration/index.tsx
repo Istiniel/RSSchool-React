@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { CardType } from '../../components/Card';
 import Form from '../../components/Form';
 import st from './registration.module.scss';
-import Cards from './../../components/Cards/index';
+import { FormCardType } from '../../components/FormCard';
+import FormCards from '../../components/FormCards';
 
 const Registration = () => {
-  const [cards, setCards] = useState<CardType[]>([]);
+  const [cards, setCards] = useState<FormCardType[]>([]);
 
-  function addCard(newCard: CardType) {
+  function addCard(newCard: FormCardType) {
     setCards((prevState) => [...prevState, newCard]);
   }
 
@@ -15,9 +15,9 @@ const Registration = () => {
     <div className={st['registration-section']}>
       <div className={'wrapper'}>
         <div className={st.container}>
-          <Form addCard={(card: CardType) => addCard(card)}></Form>
+          <Form addCard={(card: FormCardType) => addCard(card)}></Form>
         </div>
-        <Cards cards={cards} />
+        <FormCards cards={cards} />
       </div>
     </div>
   );
