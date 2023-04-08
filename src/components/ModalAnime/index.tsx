@@ -1,6 +1,5 @@
 import React from 'react';
 import st from './ModalAnime.module.scss';
-import useRemoveDisplayShift from './../../hooks/useRemoveDisplayShift';
 import useFetchAnimeById from '../../hooks/useFetchAnimeById';
 import Spinner from './../Spinner/index';
 import Portal from '../Portal';
@@ -12,8 +11,6 @@ type ModalAnimeProps = {
 
 const ModalAnime: React.FC<ModalAnimeProps> = ({ closeModal, animeId }) => {
   const { anime, loading } = useFetchAnimeById(animeId);
-
-  useRemoveDisplayShift();
 
   return (
     <Portal>

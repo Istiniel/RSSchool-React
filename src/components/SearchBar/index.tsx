@@ -17,7 +17,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ setAnimeTitle }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} role="searchBarForm">
       <input
         type="text"
         value={searchValue}

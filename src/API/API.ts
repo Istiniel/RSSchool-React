@@ -126,7 +126,7 @@ export interface Anime {
   }[];
 }
 
-interface FetchAnimesResponse {
+export interface FetchAnimesResponse {
   pagination: {
     last_visible_page: number;
     has_next_page: boolean;

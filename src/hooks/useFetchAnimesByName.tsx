@@ -28,7 +28,7 @@ const useFetchAnimesByName = (title: string) => {
         if (animeList.length === 0) {
           setError(true);
         }
-      }, 1000);
+      }, 500);
     } catch (error) {
       setError(true);
     }
