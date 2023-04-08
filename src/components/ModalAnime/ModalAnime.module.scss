@@ -1,0 +1,112 @@
+.container {
+  padding: 2rem;
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba($color: #000000, $alpha: 0.25);
+
+  display: grid;
+  place-items: center center;
+
+  overflow-y: scroll;
+
+  @include maxQ(small) {
+    padding: 2rem 1rem;
+  }
+}
+
+.modal {
+  position: relative;
+  padding: 3rem;
+  background-color: aliceblue;
+
+  min-width: 30rem;
+  max-width: 50vw;
+  // height: 50rem;
+
+  border-radius: 1rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+
+  @include maxQ(medium) {
+    padding: 2rem;
+    flex-direction: column;
+    height: auto;
+  }
+}
+
+.closeButton {
+  background-color: transparent;
+  border-radius: 100rem;
+  width: 5rem;
+  height: 5rem;
+
+  font-family: $font-serif;
+  color: $primary-black2;
+  @include font(3rem, 130%, 400);
+
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.thumbContainer {
+  align-self: flex-start;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+
+  @include maxQ(medium) {
+    align-self: center;
+    height: auto;
+  }
+}
+
+.thumb {
+  max-width: 50rem;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.infoBlock {
+  flex: 1 0 auto;
+  align-self: flex-start;
+  @extend %flexcolumn;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+
+  max-width: 50%;
+
+  font-family: $font-serif;
+  color: $primary-black2;
+  @include font(1.5rem, 130%, 400);
+
+  @include maxQ(medium) {
+    max-width: 100%;
+    align-self: center;
+  }
+
+  span {
+    font-weight: 600;
+  }
+}
+
+.fullTitle {
+  @include font(2rem, 130%, 600);
+  color: $primary-black;
+}
+
+.synopsis {
+  @include font(1.5rem, 130%, 400);
+  text-align: justify;
+}

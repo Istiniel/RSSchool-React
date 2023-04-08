@@ -8,6 +8,5 @@ describe('Button', () => {
 
     const buttonInnerText = screen.getByText(/test-content/);
     expect(buttonInnerText).toBeInTheDocument();
-    screen.debug();
   });
 });

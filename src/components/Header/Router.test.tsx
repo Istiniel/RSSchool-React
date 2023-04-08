@@ -14,7 +14,6 @@ describe('Cards', () => {
   it('route change', async () => {
     const { router } = setupRouter();
 
-    screen.debug();
     fireEvent.click(screen.getByRole('button', { name: 'Navigate to Home' }));
 
     await waitFor(() => {

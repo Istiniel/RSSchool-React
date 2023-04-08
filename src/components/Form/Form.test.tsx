@@ -27,8 +27,6 @@ describe('Form', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Create' }));
     });
 
-    screen.debug();
-
     expect(mockOnSubmit.mock.calls).toHaveLength(1);
   });
 

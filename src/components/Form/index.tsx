@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
-import { CardType } from '../Card';
 import CityInput from './../CityInput/index';
 import DateInput from '../DateInput';
 import PopUp from '../PopUp';
@@ -11,6 +10,7 @@ import SelectInput from '../SelectInput';
 import CheckBoxInput from '../CheckBoxInput';
 import Switcher from '../Switcher';
 import FileInput from '../FileInput';
+import { FormCardType } from '../FormCard';
 
 export interface FormValues {
   city: string;
@@ -24,7 +24,7 @@ export interface FormValues {
 }
 
 type FormPropsType = {
-  addCard: (card: CardType) => void;
+  addCard: (anime: FormCardType) => void;
   callback?: () => void;
 };
 
@@ -45,7 +45,7 @@ const AddCardForm: React.FC<FormPropsType> = ({ addCard, callback }) => {
     const file = data.image[0];
     const image = URL.createObjectURL(file);
 
-    const newCard: CardType = {
+    const newCard: FormCardType = {
       title: data.city,
       description: 'New Created Post Card',
       thumb: image,
