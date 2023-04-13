@@ -11,6 +11,8 @@ import CheckBoxInput from '../CheckBoxInput';
 import Switcher from '../Switcher';
 import FileInput from '../FileInput';
 import { FormCardType } from '../FormCard';
+import { useAppDispatch } from '../../redux/hooks';
+import { addFormCard } from '../../redux/features/anime/anime';
 
 export interface FormValues {
   city: string;
@@ -24,12 +26,13 @@ export interface FormValues {
 }
 
 type FormPropsType = {
-  addCard: (anime: FormCardType) => void;
   callback?: () => void;
 };
 
-const AddCardForm: React.FC<FormPropsType> = ({ addCard, callback }) => {
+const AddCardForm: React.FC<FormPropsType> = ({ callback }) => {
   const [isPopActive, setIsPopActive] = useState<boolean>(false);
+
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -54,7 +57,7 @@ const AddCardForm: React.FC<FormPropsType> = ({ addCard, callback }) => {
       id: Math.random() * 823,
     };
 
-    addCard(newCard);
+    dispatch(addFormCard(newCard));
     reset();
     setIsPopActive(true);
   };

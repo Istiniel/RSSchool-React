@@ -1,8 +1,8 @@
 import React from 'react';
 import st from './ModalAnime.module.scss';
-import useFetchAnimeById from '../../hooks/useFetchAnimeById';
 import Spinner from './../Spinner/index';
 import Portal from '../Portal';
+import { useFetchAnimeByIdQuery } from '../../redux/API/animeAPI';
 
 type ModalAnimeProps = {
   closeModal: () => void;
@@ -10,13 +10,14 @@ type ModalAnimeProps = {
 };
 
 const ModalAnime: React.FC<ModalAnimeProps> = ({ closeModal, animeId }) => {
-  const { anime, loading } = useFetchAnimeById(animeId);
+  const { data, error, isLoading } = useFetchAnimeByIdQuery(animeId);
+  const anime = data?.data;
 
   return (
     <Portal>
       <div className={st.container} onClick={closeModal}>
-        {loading && <Spinner />}
-        {!loading && (
+        {isLoading && <Spinner />}
+        {!isLoading && (
           <div className={st.modal} onClick={(e: React.MouseEvent) => e.stopPropagation()}>
             <button className={st.closeButton} onClick={closeModal}>
               +
@@ -46,6 +47,7 @@ const ModalAnime: React.FC<ModalAnimeProps> = ({ closeModal, animeId }) => {
             </div>
           </div>
         )}
+        {error && <h2 className={st.error}>Error is occured</h2>}
       </div>
     </Portal>
   );

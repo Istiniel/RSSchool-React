@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import st from './searchBar.module.scss';
-import useSaveSearchValueInLS from '../../hooks/useSaveSearchValueInLS';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { changeSearchQuery, selectSearchQuery } from '../../redux/features/anime/anime';
 
-type SearchBarProps = {
-  setAnimeTitle: React.Dispatch<React.SetStateAction<string>>;
-};
-
-const SearchBar: React.FC<SearchBarProps> = ({ setAnimeTitle }) => {
+const SearchBar: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
-
-  useSaveSearchValueInLS({ searchValue, setSearchValue });
+  const dispatch = useAppDispatch();
+  const searchQuery = useAppSelector(selectSearchQuery);
 
   function handleSubmit(event: React.SyntheticEvent) {
-    setAnimeTitle(searchValue);
+    dispatch(changeSearchQuery(searchValue));
     event.preventDefault();
   }
+
+  useEffect(() => {
+    setSearchValue(searchQuery);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <form onSubmit={handleSubmit} role="searchBarForm">

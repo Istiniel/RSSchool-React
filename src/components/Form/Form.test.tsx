@@ -1,14 +1,15 @@
 import React from 'react';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import { vi } from 'vitest';
 import Form from './index';
+import { renderTestWithStore } from '../../helpers/renderTestWithStore';
 
 describe('Form', () => {
   window.URL.createObjectURL = vi.fn();
   const mockOnSubmit = vi.fn();
 
   it('with valid inputs calls onSubmit func', async () => {
-    render(<Form addCard={() => console.log('test')} callback={mockOnSubmit} />);
+    renderTestWithStore(<Form callback={mockOnSubmit} />);
 
     const file = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' });
 
@@ -31,10 +32,9 @@ describe('Form', () => {
   });
 
   it('with invalid renders validation errors', async () => {
-    const { getByRole, getByLabelText, container } = render(
-      <Form addCard={() => console.log('test')} callback={mockOnSubmit} />
+    const { getByRole, getByLabelText, container } = renderTestWithStore(
+      <Form callback={mockOnSubmit} />
     );
-
     await act(async () => {
       fireEvent.change(getByLabelText('City:'), { target: { value: 'abc' } });
     });
