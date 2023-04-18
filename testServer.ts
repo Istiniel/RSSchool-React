@@ -1,7 +1,13 @@
 import { rest } from 'msw';
+import { fetch, Headers, Request, Response } from 'cross-fetch';
 import { setupServer } from 'msw/node';
 import { mockAnimes } from './src/mocks/mockAnimes';
 import { mockAnime } from './src/mocks/mockAnime';
+
+global.fetch = fetch;
+global.Headers = Headers;
+global.Request = Request;
+global.Response = Response;
 
 const server = setupServer(
   rest.get('https://api.jikan.moe/v4/anime', (req, res, ctx) => {
