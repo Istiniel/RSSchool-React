@@ -1,23 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Form from '../../components/Form';
 import st from './registration.module.scss';
-import { FormCardType } from '../../components/FormCard';
 import FormCards from '../../components/FormCards';
+import { useAppSelector } from '../../redux/hooks';
+import { selectFormCards } from '../../redux/features/anime/anime';
 
 const Registration = () => {
-  const [cards, setCards] = useState<FormCardType[]>([]);
-
-  function addCard(newCard: FormCardType) {
-    setCards((prevState) => [...prevState, newCard]);
-  }
+  const formCards = useAppSelector(selectFormCards);
 
   return (
     <div className={st['registration-section']}>
       <div className={'wrapper'}>
         <div className={st.container}>
-          <Form addCard={(card: FormCardType) => addCard(card)}></Form>
+          <Form />
         </div>
-        <FormCards cards={cards} />
+        <FormCards cards={formCards} />
       </div>
     </div>
   );

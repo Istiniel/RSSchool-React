@@ -1,10 +1,10 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import SearchBar from './index';
+import { screen, fireEvent } from '@testing-library/react';
+import { renderTestApp } from '../../helpers/renderTestApp';
 
 describe('Cards', () => {
   it('shows typed text', () => {
-    render(<SearchBar setAnimeTitle={() => null} />);
+    renderTestApp(<></>);
     const input = screen.getByRole('textbox');
 
     fireEvent.change(input, { target: { value: 'fukuoka' } });
@@ -12,13 +12,15 @@ describe('Cards', () => {
     expect(screen.getByDisplayValue('fukuoka')).toBeInTheDocument();
   });
 
-  it('saves value in the localstorage', () => {
-    const { unmount } = render(<SearchBar setAnimeTitle={() => null} />);
-    const input = screen.getByRole('textbox');
+  it('saves value in the store anime slice', () => {
+    const { store, unmount } = renderTestApp(<></>);
+    const form = screen.getByRole<HTMLFormElement>('searchBarForm');
+    const input = screen.getByPlaceholderText('Enter anime title...');
     fireEvent.change(input, { target: { value: 'after change' } });
+    fireEvent.submit(form);
 
     unmount();
 
-    expect(localStorage.getItem('searchKey')).toBe((input as HTMLInputElement).value);
+    expect(store.getState().anime.searchQuery).toBe((input as HTMLInputElement).value);
   });
 });

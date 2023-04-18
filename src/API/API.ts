@@ -1,11 +1,3 @@
-const API_URL = 'https://api.jikan.moe/v4/';
-const ANIME_QUERY = 'anime?q=';
-const SFW = '&sfw';
-
-const getConfig = {
-  method: 'GET',
-};
-
 export interface Anime {
   mal_id: number;
   url: string;
@@ -126,7 +118,7 @@ export interface Anime {
   }[];
 }
 
-export interface FetchAnimesResponse {
+export interface fetchAnimesResponse {
   pagination: {
     last_visible_page: number;
     has_next_page: boolean;
@@ -144,22 +136,3 @@ export interface FetchAnimesResponse {
 export interface fetchAnimeByIdResponse {
   data: Anime;
 }
-
-type ApiSettingsType = {
-  fetchAnimesByTitle: (title: string) => Promise<FetchAnimesResponse>;
-  fetchAnimeById: (id: number) => Promise<fetchAnimeByIdResponse>;
-};
-
-const APIQuerys: ApiSettingsType = {
-  fetchAnimesByTitle: async (title: string) => {
-    const endpoint = API_URL + ANIME_QUERY + title + SFW;
-    return await (await fetch(endpoint, getConfig)).json();
-  },
-
-  fetchAnimeById: async (id: number) => {
-    const endpoint = API_URL + 'anime/' + id;
-    return await (await fetch(endpoint, getConfig)).json();
-  },
-};
-
-export const { fetchAnimesByTitle, fetchAnimeById } = APIQuerys;
