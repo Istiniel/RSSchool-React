@@ -15,6 +15,10 @@
     "baseUrl": "../src",
     "resolveJsonModule": true
   },
+  "ts-node": {
+    "esm": true,
+    "transpileOnly": true
+  },
   "include": ["./src/**/*", "styled.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

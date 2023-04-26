@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
   [animeAPI.reducerPath]: animeAPI.reducer,
 });
 
-export function setupStore(preloadedState?: PreloadedState<RootState>) {
+export default function setupStore(preloadedState?: PreloadedState<RootState>) {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(animeAPI.middleware),
