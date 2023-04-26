@@ -53,8 +53,6 @@ app.use('*', async (req, res) => {
         console.log(err);
       },
     });
-
-    res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
   } catch (e) {
     console.log(e);
   }

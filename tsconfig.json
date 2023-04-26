@@ -19,6 +19,6 @@
     "esm": true,
     "transpileOnly": true
   },
-  "include": ["./src/**/*", "styled.d.ts"],
+  "include": ["./src/**/*", "styled.d.ts", "cypress/e2e/App.cy.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
