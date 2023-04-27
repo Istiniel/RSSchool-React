@@ -19,7 +19,6 @@ export default defineConfig({
   },
 
   video: false,
-  experimentalFetchPolyfill: true,
   defaultCommandTimeout: 10000,
   screenshotOnRunFailure: false,
 });
