@@ -15,6 +15,11 @@
     "baseUrl": "../src",
     "resolveJsonModule": true
   },
-  "include": ["./src/**/*", "styled.d.ts"],
+  "ts-node": {
+    "esm": true,
+    "transpileOnly": true
+  },
+  "include": ["./src/**/*", "styled.d.ts", "cypress/e2e/HomePage.cy.tsx"],
+  "exclude": ["cypress"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

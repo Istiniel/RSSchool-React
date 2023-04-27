@@ -26,7 +26,9 @@ const ModalAnime: React.FC<ModalAnimeProps> = ({ closeModal, animeId }) => {
               <img src={anime?.images.jpg.large_image_url || ''} alt="thumb" className={st.thumb} />
             </div>
             <div className={st.infoBlock}>
-              <h2 className={st.fullTitle}>{anime?.title}</h2>
+              <h2 className={st.fullTitle} data-cy="animeTitle">
+                {anime?.title}
+              </h2>
               <h3 className={st.id}>{anime?.mal_id}</h3>
               <h3 className={st.score}>
                 Score: <span>{anime?.score || '-'}</span>

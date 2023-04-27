@@ -19,7 +19,7 @@ const FormCard: React.FC<FormCardType> = ({ title, description, thumb, date, con
       <img className={st.card__image} src={thumb} alt={`${title}_thumb`}></img>
       <h2 className={st.card__title}>{title}</h2>
       <p className={st.card__description}>{description}</p>
-      <div className={st.card__contacts}>
+      <div className={st.card__contacts} data-cy="formCard-container">
         <div className={st.card__links}>
           {contacts === 'instagram' && (
             <a href={thumb} target="_blank" rel="noreferrer" className={st.card__link}>

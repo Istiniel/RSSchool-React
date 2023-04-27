@@ -1,5 +1,15 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {
+  fetchBaseQuery,
+  buildCreateApi,
+  coreModule,
+  reactHooksModule,
+} from '@reduxjs/toolkit/query/react';
 import { fetchAnimeByIdResponse, fetchAnimesResponse } from './../../API/API';
+
+const createApi = buildCreateApi(
+  coreModule(),
+  reactHooksModule({ unstable__sideEffectsInRender: true })
+);
 
 export const animeAPI = createApi({
   reducerPath: 'animeAPI',
